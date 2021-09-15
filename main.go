@@ -7,6 +7,7 @@ import (
 	"review_movie/genre"
 	"review_movie/handler"
 	"review_movie/middleware"
+	"review_movie/model"
 	"review_movie/movie"
 	"review_movie/moviegenre"
 	"review_movie/review"
@@ -35,7 +36,7 @@ func main() {
 		log.Fatal(err.Error())
 	}
 
-	db.AutoMigrate(&user.User{}, &review.Review{}, &moviegenre.MovieGenre{}, &movie.Movie{}, &genre.Genre{})
+	db.AutoMigrate(&model.User{}, &model.Review{}, &model.MovieGenre{}, &model.Movie{}, &model.Genre{})
 
 	//! Auth
 	authService := auth.NewService()

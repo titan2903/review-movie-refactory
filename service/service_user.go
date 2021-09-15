@@ -1,30 +1,33 @@
-package user
+package service
 
 import (
 	"errors"
+	"review_movie/input"
+	"review_movie/model"
+	"review_movie/repository"
 
 	"golang.org/x/crypto/bcrypt"
 )
 
-type Service interface {
-	RegisterUser(input RegisterUserInput) (User, error)
-	Login(input LoginInput) (User, error)
-	GetUserByID(ID int) (User, error)
-	GetAllUsers() ([]User, error)
-	UpdateUser(input UpdateUserInput, inputEmail FindByEmailInput) (User, error)
-	FindUserByEmail(email FindByEmailInput) (User, error)
+type ServiceUser interface {
+	RegisterUser(input input.RegisterUserInput) (model.User, error)
+	Login(input input.LoginInput) (model.User, error)
+	GetUserByID(ID int) (model.User, error)
+	GetAllUsers() ([]model.User, error)
+	UpdateUser(input input.UpdateUserInput, inputEmail input.FindByEmailInput) (model.User, error)
+	FindUserByEmail(email input.FindByEmailInput) (model.User, error)
 }
 
-type service struct { //! memanggil repository
-	repository Repository
+type serviceuser struct { //! memanggil repository
+	repository repository.RepositoryUser
 }
 
-func NewService(repository Repository) *service {
-	return &service{repository}
+func NewService(repository repository.RepositoryUser) *serviceuser {
+	return &serviceuser{repository}
 }
 
-func(s *service) RegisterUser(input RegisterUserInput) (User, error) {
-	user := User{}
+func(s *serviceuser) RegisterUser(input input.RegisterUserInput) (model.User, error) {
+	user := model.User{}
 	user.FullName = input.FullName
 	user.Email = input.Email
 	passwordHash, err := bcrypt.GenerateFromPassword([]byte(input.Password), bcrypt.MinCost)
@@ -48,7 +51,7 @@ func(s *service) RegisterUser(input RegisterUserInput) (User, error) {
 	return newUser, nil
 }
 
-func(s *service) Login(input LoginInput) (User, error) {
+func(s *serviceuser) Login(input input.LoginInput) (model.User, error) {
 	email := input.Email
 	password := input.Password
 
@@ -71,7 +74,7 @@ func(s *service) Login(input LoginInput) (User, error) {
 	return user, nil
 }
 
-func(s *service) GetUserByID(ID int) (User, error) {
+func(s *serviceuser) GetUserByID(ID int) (model.User, error) {
 	user, err := s.repository.FindByID(ID)
 
 	if err != nil {
@@ -86,7 +89,7 @@ func(s *service) GetUserByID(ID int) (User, error) {
 }
 
 
-func(s *service) GetAllUsers() ([]User, error) {
+func(s *serviceuser) GetAllUsers() ([]model.User, error) {
 	users, err := s.repository.GetDataUser()
 	if err != nil {
 		return users, err
@@ -95,7 +98,7 @@ func(s *service) GetAllUsers() ([]User, error) {
 	return users, nil
 }
 
-func(s *service) UpdateUser(input UpdateUserInput, inputEmail FindByEmailInput) (User, error) {
+func(s *serviceuser) UpdateUser(input input.UpdateUserInput, inputEmail input.FindByEmailInput) (model.User, error) {
 	user, err := s.repository.FindByEmail(inputEmail.Email)
 	if err != nil {
 		return user, err
@@ -115,7 +118,7 @@ func(s *service) UpdateUser(input UpdateUserInput, inputEmail FindByEmailInput) 
 	return updatedUser, nil
 }
 
-func(s *service) FindUserByEmail(input FindByEmailInput) (User, error) {
+func(s *serviceuser) FindUserByEmail(input input.FindByEmailInput) (model.User, error) {
 	user, err := s.repository.FindByEmail(input.Email)
 
 	if err != nil {

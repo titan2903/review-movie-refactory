@@ -3,23 +3,25 @@ package handler
 import (
 	"fmt"
 	"net/http"
+	"review_movie/formatter"
 	"review_movie/helper"
-	"review_movie/review"
-	"review_movie/user"
+	"review_movie/input"
+	"review_movie/model"
+	"review_movie/service"
 
 	"github.com/gin-gonic/gin"
 )
 
 type reviewHandler struct {
-	service review.Service
+	service service.ServiceReview
 }
 
-func NewReviewHandler(service review.Service) *reviewHandler {
+func NewReviewHandler(service service.ServiceReview) *reviewHandler {
 	return &reviewHandler{service}
 }
 
 func (r *reviewHandler) CreateReview(c *gin.Context) {
-	var input review.CreateReviewInput
+	var input input.CreateReviewInput
 	fmt.Printf("data %v", input)
 	err := c.ShouldBind(&input)
 	if err != nil {
@@ -29,7 +31,7 @@ func (r *reviewHandler) CreateReview(c *gin.Context) {
 		return;
 	}
 
-	currentUser := c.MustGet("currentUser").(user.User)
+	currentUser := c.MustGet("currentUser").(model.User)
 	input.UserID = currentUser.ID
 
 	if currentUser.Role != "user" {
@@ -45,7 +47,7 @@ func (r *reviewHandler) CreateReview(c *gin.Context) {
 		return;
 	}
 
-	formatter := review.FormatCreateReviewResponse(newReview)
+	formatter := formatter.FormatCreateReviewResponse(newReview)
 
 	response := helper.ApiResponseGeneral("Sucessfully Add Reviews For this Movie!", "success", formatter)
 

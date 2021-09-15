@@ -1,9 +1,6 @@
-package review
+package model
 
 import (
-	"review_movie/movie"
-	"review_movie/user"
-
 	"gorm.io/gorm"
 )
 
@@ -14,6 +11,6 @@ type Review struct {
 	Rate 				int
 	UserID 				int
 	MovieID 			int
-	User				user.User
-	Movie				movie.Movie
+	User				User
+	Movie				Movie
 }

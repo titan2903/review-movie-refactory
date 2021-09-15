@@ -2,23 +2,25 @@ package handler
 
 import (
 	"net/http"
+	"review_movie/formatter"
 	"review_movie/helper"
-	"review_movie/moviegenre"
-	"review_movie/user"
+	"review_movie/input"
+	"review_movie/model"
+	"review_movie/service"
 
 	"github.com/gin-gonic/gin"
 )
 
 type movieGenreHandler struct {
-	service moviegenre.Service
+	service service.ServiceMovieGenre
 }
 
-func NewMovieGenreHandler(service moviegenre.Service) *movieGenreHandler {
+func NewMovieGenreHandler(service service.ServiceMovieGenre) *movieGenreHandler {
 	return &movieGenreHandler{service}
 }
 
 func(mg *movieGenreHandler) CreateMovieGenre(c *gin.Context) {
-	var input moviegenre.MovieGenreInput
+	var input input.MovieGenreInput
 
 	err := c.ShouldBind(&input)
 	if err != nil {
@@ -28,7 +30,7 @@ func(mg *movieGenreHandler) CreateMovieGenre(c *gin.Context) {
 		return;
 	}
 
-	currentUser := c.MustGet("currentUser").(user.User)
+	currentUser := c.MustGet("currentUser").(model.User)
 	if currentUser.Role != "admin" && currentUser.Role != "user" {
 		response := helper.ApiResponseError("Role is not Admin", http.StatusBadRequest, "error", nil)
 		c.JSON(http.StatusBadRequest, response)
@@ -42,7 +44,7 @@ func(mg *movieGenreHandler) CreateMovieGenre(c *gin.Context) {
 		return;
 	}
 
-	formatter := moviegenre.FormatCreateMovieGenreResponse(newMovieGenre)
+	formatter := formatter.FormatCreateMovieGenreResponse(newMovieGenre)
 
 	response := helper.ApiResponseGeneral("Sucessfully Created Data!", "success", formatter)
 

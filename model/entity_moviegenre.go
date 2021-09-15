@@ -1,4 +1,4 @@
-package moviegenre
+package model
 
 import (
 	"gorm.io/gorm"

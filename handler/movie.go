@@ -2,23 +2,25 @@ package handler
 
 import (
 	"net/http"
+	"review_movie/formatter"
 	"review_movie/helper"
-	"review_movie/movie"
-	"review_movie/user"
+	"review_movie/input"
+	"review_movie/model"
+	"review_movie/service"
 
 	"github.com/gin-gonic/gin"
 )
 
 type movieHandler struct {
-	service movie.Service
+	service service.ServiceMovie
 }
 
-func NewMovieHandler(service movie.Service) *movieHandler {
+func NewMovieHandler(service service.ServiceMovie) *movieHandler {
 	return &movieHandler{service}
 }
 
 func(m *movieHandler) CreateMovie(c *gin.Context) {
-	var input movie.CreateMovieInput
+	var input input.CreateMovieInput
 
 	err := c.ShouldBind(&input)
 	if err != nil {
@@ -28,7 +30,7 @@ func(m *movieHandler) CreateMovie(c *gin.Context) {
 		return;
 	}
 
-	currentUser := c.MustGet("currentUser").(user.User)
+	currentUser := c.MustGet("currentUser").(model.User)
 	if currentUser.Role != "admin" && currentUser.Role != "user" {
 		response := helper.ApiResponseError("Role is not Admin", http.StatusBadRequest, "error", nil)
 		c.JSON(http.StatusBadRequest, response)
@@ -42,7 +44,7 @@ func(m *movieHandler) CreateMovie(c *gin.Context) {
 		return;
 	}
 
-	formatter := movie.FormatCreateMovieResponse(newMovie)
+	formatter := formatter.FormatCreateMovieResponse(newMovie)
 
 	response := helper.ApiResponseGeneral("Sucessfully Created Data!", "success", formatter)
 

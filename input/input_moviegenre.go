@@ -1,4 +1,4 @@
-package moviegenre
+package input
 
 type MovieGenreInput struct {
 	MovieID int `json:"moviesID" form:"moviesID"`

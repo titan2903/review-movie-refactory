@@ -1,6 +1,9 @@
-package user
+package formatter
 
-import "time"
+import (
+	"review_movie/model"
+	"time"
+)
 
 type UserFormatter struct {
 	ID         int    `json:"id"`
@@ -23,7 +26,7 @@ type UserFormatterLogin struct {
 	Code int `json:"code"`
 }
 
-func FormatUserRegisterResponse(user User) UserFormatterRegister {
+func FormatUserRegisterResponse(user model.User) UserFormatterRegister {
 	formatter := UserFormatterRegister{
 		ID:         user.ID,
 		FullName:       user.FullName,
@@ -34,7 +37,7 @@ func FormatUserRegisterResponse(user User) UserFormatterRegister {
 	return formatter
 }
 
-func FormatUserResponse(user User, token string) UserFormatter {
+func FormatUserResponse(user model.User, token string) UserFormatter {
 	formatter := UserFormatter{
 		ID:         user.ID,
 		Email:      user.Email,
@@ -45,7 +48,7 @@ func FormatUserResponse(user User, token string) UserFormatter {
 	return formatter
 }
 
-func FormatUserLoginResponse(user User, token string, expire time.Time, statusCode int) UserFormatterLogin {
+func FormatUserLoginResponse(user model.User, token string, expire time.Time, statusCode int) UserFormatterLogin {
 	formatter := UserFormatterLogin {
 		Code: statusCode,
 		Expire: expire,

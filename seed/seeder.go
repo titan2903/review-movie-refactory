@@ -2,19 +2,19 @@ package seed
 
 import (
 	"log"
-	"review_movie/user"
+	"review_movie/model"
 
 	"github.com/jinzhu/gorm"
 )
 
-var users = []user.User{
-	user.User{
+var users = []model.User{
+	model.User{
 		FullName: "Steven William",
 		Email:    "steven@gmail.com",
 		Password: "password",
 		Role: "admin",
 	},
-	user.User{
+	model.User{
 		FullName: "Martin Luther",
 		Email:    "luther@gmail.com",
 		Password: "password",
@@ -24,17 +24,17 @@ var users = []user.User{
 
 func Load(db *gorm.DB) {
 
-	err := db.Debug().DropTableIfExists(&user.User{}).Error
+	err := db.Debug().DropTableIfExists(&model.User{}).Error
 	if err != nil {
 		log.Fatalf("cannot drop table: %v", err)
 	}
-	err = db.Debug().AutoMigrate(&user.User{}).Error
+	err = db.Debug().AutoMigrate(&model.User{}).Error
 	if err != nil {
 		log.Fatalf("cannot migrate table: %v", err)
 	}
 
 	for i, _ := range users {
-		err = db.Debug().Model(&user.User{}).Create(&users[i]).Error
+		err = db.Debug().Model(&model.User{}).Create(&users[i]).Error
 		if err != nil {
 			log.Fatalf("cannot seed users table: %v", err)
 		}

@@ -1,8 +1,7 @@
-package review
+package input
 
 import (
-	"review_movie/movie"
-	"review_movie/user"
+	"review_movie/model"
 )
 
 type CreateReviewInput struct {
@@ -14,6 +13,6 @@ type CreateReviewInput struct {
 
 type GetReviewInputByID struct {
 	ID   int `uri:"id" binding:"required"`
-	User user.User
-	Movie movie.Movie
+	User model.User
+	Movie model.Movie
 }

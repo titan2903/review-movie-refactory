@@ -3,24 +3,27 @@ package handler
 import (
 	"net/http"
 	"review_movie/auth"
+	"review_movie/formatter"
 	"review_movie/helper"
-	"review_movie/user"
+	"review_movie/input"
+	"review_movie/model"
+	"review_movie/service"
 	"time"
 
 	"github.com/gin-gonic/gin"
 )
 
 type userHandler struct {
-	userService user.Service
+	userService service.ServiceUser
 	authService auth.Service
 }
 
-func NewUserHandler(userService user.Service, authService auth.Service) *userHandler {
+func NewUserHandler(userService service.ServiceUser, authService auth.Service) *userHandler {
 	return &userHandler{userService, authService}
 }
 
 func(h *userHandler) RegisterUser(c *gin.Context) {
-	var input user.RegisterUserInput
+	var input input.RegisterUserInput
 
 	err := c.ShouldBind(&input)
 
@@ -47,7 +50,7 @@ func(h *userHandler) RegisterUser(c *gin.Context) {
 		return
 	}
 
-	formatter := user.FormatUserRegisterResponse(newUser)
+	formatter := formatter.FormatUserRegisterResponse(newUser)
 
 	response := helper.ApiResponseGeneral("Sucessfully Register!", "success", formatter)
 
@@ -55,7 +58,7 @@ func(h *userHandler) RegisterUser(c *gin.Context) {
 }
 
 func(h *userHandler) Login(c *gin.Context) {
-	var input user.LoginInput
+	var input input.LoginInput
 
 	err := c.ShouldBindJSON(&input)
 
@@ -85,22 +88,22 @@ func(h *userHandler) Login(c *gin.Context) {
 
 	expireToken := time.Now().Add(time.Minute * 15)
 
-	formatter := user.FormatUserLoginResponse(loggedinUser, token, expireToken,http.StatusOK)
+	formatter := formatter.FormatUserLoginResponse(loggedinUser, token, expireToken,http.StatusOK)
 
 	response := helper.ApiResponseLogin(formatter)
 	c.JSON(http.StatusOK, response)
 }
 
 func(h *userHandler) FetchUser(c *gin.Context) {
-	currentUser := c.MustGet("currentUser").(user.User)
-	formatter := user.FormatUserResponse(currentUser, "")
+	currentUser := c.MustGet("currentUser").(model.User)
+	formatter := formatter.FormatUserResponse(currentUser, "")
 
 	response := helper.ApiResponseGeneral("Sucessfully Get Data!", "success", formatter)
 	c.JSON(http.StatusOK, response)
 }
 
 func(h *userHandler) GetUserByEmail(c *gin.Context) {
-	var input user.FindByEmailInput
+	var input input.FindByEmailInput
 
 	err := c.ShouldBindQuery(&input)
 	if err != nil {
@@ -113,7 +116,7 @@ func(h *userHandler) GetUserByEmail(c *gin.Context) {
 		return
 	}
 
-	currentUser := c.MustGet("currentUser").(user.User)
+	currentUser := c.MustGet("currentUser").(model.User)
 	if currentUser.Role != "user" && currentUser.Role != "admin" {
 		response := helper.ApiResponseError("Role is not user or admin", http.StatusBadRequest, "error", nil)
 		c.JSON(http.StatusBadRequest, response)
@@ -133,7 +136,7 @@ func(h *userHandler) GetUserByEmail(c *gin.Context) {
 		return
 	}
 
-	formatter := user.FormatUserRegisterResponse(foundUser)
+	formatter := formatter.FormatUserRegisterResponse(foundUser)
 
 	response := helper.ApiResponseGeneral("Sucessfully Get Data!Sucessfully Get Data!", "success", formatter)
 
@@ -141,7 +144,7 @@ func(h *userHandler) GetUserByEmail(c *gin.Context) {
 }
 
 func(h *userHandler) UpdateUser(c *gin.Context) {
-	var input user.UpdateUserInput
+	var input input.UpdateUserInput
 
 	err := c.ShouldBind(&input)
 
@@ -155,7 +158,7 @@ func(h *userHandler) UpdateUser(c *gin.Context) {
 		return
 	}
 
-	var inputEmail user.FindByEmailInput
+	var inputEmail input.FindByEmailInput
 	err = c.ShouldBindQuery(&inputEmail)
 
 	if err != nil {
@@ -168,7 +171,7 @@ func(h *userHandler) UpdateUser(c *gin.Context) {
 		return
 	}
 
-	updateInput := user.UpdateUserInput{}
+	updateInput := input.UpdateUserInput{}
 	updateInput.FullName = input.FullName
 	updateInput.Email = input.Email
 
@@ -179,7 +182,7 @@ func(h *userHandler) UpdateUser(c *gin.Context) {
 		return
 	}
 
-	formatter := user.FormatUserRegisterResponse(newUser)
+	formatter := formatter.FormatUserRegisterResponse(newUser)
 
 	response := helper.ApiResponseGeneral("Sucessfully Updated Data!", "success", formatter)
 

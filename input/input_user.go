@@ -1,4 +1,4 @@
-package user
+package input
 
 type RegisterUserInput struct {
 	Email      string `json:"email" form:"email" binding:"required"`
