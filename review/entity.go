@@ -1,7 +1,8 @@
 package review
 
 import (
-	"time"
+	"review_movie/movie"
+	"review_movie/user"
 
 	"gorm.io/gorm"
 )
@@ -13,7 +14,6 @@ type Review struct {
 	Rate 				int
 	UserID 				int
 	MovieID 			int
-	CreatedAt      		time.Time
-	UpdatedAt	   		time.Time
-	DeletedAt			time.Time
+	User				user.User
+	Movie				movie.Movie
 }

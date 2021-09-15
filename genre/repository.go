@@ -11,12 +11,18 @@ type repository struct {
 	db *gorm.DB
 }
 
-func NewRepository(db *gorm.DB) *repository { //! membuat object baru dari repository dan nilai db dari repository di isi sesuai parameter di NewRepository
+func NewRepository(db *gorm.DB) *repository {
 	return &repository{db}
 }
 
 func(r *repository) GetGenreList() ([]Genre, error) {
 	var genres []Genre
+
+	err := r.db.Find(&genres).Error
+	if err != nil {
+		return genres, err
+	}
+
 	return genres, nil
 }
 

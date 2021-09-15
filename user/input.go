@@ -13,8 +13,11 @@ type LoginInput struct {
 }
 
 type UpdateUserInput struct {
-	ID         int
-	Name       string `form:"name" binding:"required"`
-	Email      string `form:"email" binding:"required"`
+	FullName       string `json:"full_name" form:"full_name"`
+	Email      string `json:"email" form:"email"`
 	Error      error
+}
+
+type FindByEmailInput struct {
+	Email    string `json:"email" form:"email" binding:"required"`
 }
