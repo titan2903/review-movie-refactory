@@ -1,7 +1,7 @@
 package formatter
 
 import (
-	"review_movie/model"
+	"review_movie/entities"
 	"time"
 )
 
@@ -15,7 +15,7 @@ type MovieGenreFormatter struct {
 	DeletedAt		*time.Time `json:"DeletedAt"`
 }
 
-func FormatCreateMovieGenreResponse(movie_genre model.MovieGenre) MovieGenreFormatter {
+func FormatCreateMovieGenreResponse(movie_genre entities.MovieGenre) MovieGenreFormatter {
 	formatter := MovieGenreFormatter{
 		ID: movie_genre.ID,
 		MovieID:       movie_genre.MovieID,

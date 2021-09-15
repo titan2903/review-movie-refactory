@@ -1,7 +1,7 @@
 package formatter
 
 import (
-	"review_movie/model"
+	"review_movie/entities"
 	"time"
 )
 
@@ -16,7 +16,7 @@ type ReviewFormatter struct {
 	DeletedAt		*time.Time `json:"DeletedAt"`
 }
 
-func FormatCreateReviewResponse(review model.Review) ReviewFormatter {
+func FormatCreateReviewResponse(review entities.Review) ReviewFormatter {
 	formatter := ReviewFormatter{
 		ID: review.ID,
 		UserID:         review.UserID,

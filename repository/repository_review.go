@@ -1,14 +1,14 @@
 package repository
 
 import (
-	"review_movie/model"
+	"review_movie/entities"
 
 	"gorm.io/gorm"
 )
 
 type RepositoryReview interface {
-	GetReviewByMovieID(movieID int) ([]model.Review, error)
-	CreateReview(review model.Review) (model.Review, error)
+	GetReviewByMovieID(movieID int) ([]entities.Review, error)
+	CreateReview(review entities.Review) (entities.Review, error)
 }
 
 type repositoryreview struct {
@@ -19,7 +19,7 @@ func NewRepositoryReview(db *gorm.DB) *repositoryreview {
 	return &repositoryreview{db}
 }
 
-func(r *repositoryreview) CreateReview(review model.Review) (model.Review, error) {
+func(r *repositoryreview) CreateReview(review entities.Review) (entities.Review, error) {
 	err := r.db.Create(&review).Error
 	if err != nil {
 		return review, err
@@ -28,8 +28,8 @@ func(r *repositoryreview) CreateReview(review model.Review) (model.Review, error
 	return review, nil
 }
 
-func(r *repositoryreview) GetReviewByMovieID(movieID int) ([]model.Review, error) {
-	var reviews []model.Review
+func(r *repositoryreview) GetReviewByMovieID(movieID int) ([]entities.Review, error) {
+	var reviews []entities.Review
 
 	err := r.db.Preload("Movie").Where("movie_id = ?", movieID).Order("id desc").Find(&reviews).Error
 	if err != nil {

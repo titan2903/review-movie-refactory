@@ -2,10 +2,10 @@ package handler
 
 import (
 	"net/http"
+	"review_movie/entities"
 	"review_movie/formatter"
 	"review_movie/helper"
 	"review_movie/input"
-	"review_movie/model"
 	"review_movie/service"
 
 	"github.com/gin-gonic/gin"
@@ -30,7 +30,7 @@ func(mg *movieGenreHandler) CreateMovieGenre(c *gin.Context) {
 		return;
 	}
 
-	currentUser := c.MustGet("currentUser").(model.User)
+	currentUser := c.MustGet("currentUser").(entities.User)
 	if currentUser.Role != "admin" && currentUser.Role != "user" {
 		response := helper.ApiResponseError("Role is not Admin", http.StatusBadRequest, "error", nil)
 		c.JSON(http.StatusBadRequest, response)

@@ -1,14 +1,14 @@
 package repository
 
 import (
-	"review_movie/model"
+	"review_movie/entities"
 
 	"gorm.io/gorm"
 )
 
 type RepositoryGenre interface {
-	GetGenreList() ([]model.Genre, error)
-	CreateGenre(genre model.Genre) (model.Genre, error)
+	GetGenreList() ([]entities.Genre, error)
+	CreateGenre(genre entities.Genre) (entities.Genre, error)
 }
 
 type repositorygenre struct {
@@ -19,8 +19,8 @@ func NewRepositoryGenre(db *gorm.DB) *repositorygenre {
 	return &repositorygenre{db}
 }
 
-func(r *repositorygenre) GetGenreList() ([]model.Genre, error) {
-	var genres []model.Genre
+func(r *repositorygenre) GetGenreList() ([]entities.Genre, error) {
+	var genres []entities.Genre
 
 	err := r.db.Find(&genres).Error
 	if err != nil {
@@ -30,7 +30,7 @@ func(r *repositorygenre) GetGenreList() ([]model.Genre, error) {
 	return genres, nil
 }
 
-func(r *repositorygenre) CreateGenre(genre model.Genre) (model.Genre, error) {
+func(r *repositorygenre) CreateGenre(genre entities.Genre) (entities.Genre, error) {
 	err := r.db.Create(&genre).Error
 	if err != nil {
 		return genre, err

@@ -1,14 +1,14 @@
 package service
 
 import (
+	"review_movie/entities"
 	"review_movie/input"
-	"review_movie/model"
 	"review_movie/repository"
 )
 
 type ServiceGenre interface {
-	GetGenres() ([]model.Genre, error)
-	CreateGenre(input input.CreateGenreInput) (model.Genre, error)
+	GetGenres() ([]entities.Genre, error)
+	CreateGenre(input input.CreateGenreInput) (entities.Genre, error)
 }
 
 type servicegenre struct {
@@ -19,7 +19,7 @@ func NewServiceGenre(repository repository.RepositoryGenre) *servicegenre {
 	return &servicegenre{repository}
 }
 
-func(s *servicegenre) GetGenres() ([]model.Genre, error) {
+func(s *servicegenre) GetGenres() ([]entities.Genre, error) {
 	genres, err := s.repository.GetGenreList()
 	if err != nil {
 		return genres, err
@@ -27,8 +27,8 @@ func(s *servicegenre) GetGenres() ([]model.Genre, error) {
 	return genres, nil
 }
 
-func(s *servicegenre) CreateGenre(input input.CreateGenreInput) (model.Genre, error) {
-	genre := model.Genre{}
+func(s *servicegenre) CreateGenre(input input.CreateGenreInput) (entities.Genre, error) {
+	genre := entities.Genre{}
 	genre.Name = input.Name
 
 	//! Proses pembuatan slug secara otomatis

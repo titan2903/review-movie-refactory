@@ -1,6 +1,6 @@
 package formatter
 
-import "review_movie/model"
+import "review_movie/entities"
 
 type MovieFormatter struct {
 	ID int `json:"id"`
@@ -9,7 +9,7 @@ type MovieFormatter struct {
 	Year int `json:"year"`
 }
 
-func FormatCreateMovieResponse(movie model.Movie) MovieFormatter {
+func FormatCreateMovieResponse(movie entities.Movie) MovieFormatter {
 	formatter := MovieFormatter{
 		ID: movie.ID,
 		Ratings:       movie.Ratings,

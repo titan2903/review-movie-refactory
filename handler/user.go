@@ -3,10 +3,10 @@ package handler
 import (
 	"net/http"
 	"review_movie/auth"
+	"review_movie/entities"
 	"review_movie/formatter"
 	"review_movie/helper"
 	"review_movie/input"
-	"review_movie/model"
 	"review_movie/service"
 	"time"
 
@@ -95,7 +95,7 @@ func(h *userHandler) Login(c *gin.Context) {
 }
 
 func(h *userHandler) FetchUser(c *gin.Context) {
-	currentUser := c.MustGet("currentUser").(model.User)
+	currentUser := c.MustGet("currentUser").(entities.User)
 	formatter := formatter.FormatUserResponse(currentUser, "")
 
 	response := helper.ApiResponseGeneral("Sucessfully Get Data!", "success", formatter)
@@ -116,7 +116,7 @@ func(h *userHandler) GetUserByEmail(c *gin.Context) {
 		return
 	}
 
-	currentUser := c.MustGet("currentUser").(model.User)
+	currentUser := c.MustGet("currentUser").(entities.User)
 	if currentUser.Role != "user" && currentUser.Role != "admin" {
 		response := helper.ApiResponseError("Role is not user or admin", http.StatusBadRequest, "error", nil)
 		c.JSON(http.StatusBadRequest, response)

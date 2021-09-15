@@ -3,10 +3,10 @@ package handler
 import (
 	"fmt"
 	"net/http"
+	"review_movie/entities"
 	"review_movie/formatter"
 	"review_movie/helper"
 	"review_movie/input"
-	"review_movie/model"
 	"review_movie/service"
 
 	"github.com/gin-gonic/gin"
@@ -31,7 +31,7 @@ func (r *reviewHandler) CreateReview(c *gin.Context) {
 		return;
 	}
 
-	currentUser := c.MustGet("currentUser").(model.User)
+	currentUser := c.MustGet("currentUser").(entities.User)
 	input.UserID = currentUser.ID
 
 	if currentUser.Role != "user" {

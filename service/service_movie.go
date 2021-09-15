@@ -1,14 +1,14 @@
 package service
 
 import (
+	"review_movie/entities"
 	"review_movie/input"
-	"review_movie/model"
 	"review_movie/repository"
 )
 
 type ServiceMovie interface {
-	CreateMovie(input input.CreateMovieInput) (model.Movie, error)
-	GetAllMovies() ([]model.Movie, error)
+	CreateMovie(input input.CreateMovieInput) (entities.Movie, error)
+	GetAllMovies() ([]entities.Movie, error)
 }
 
 
@@ -20,8 +20,8 @@ func NewServiceMovie(repository repository.RepositoryMovie) *servicemovie {
 	return &servicemovie{repository}
 }
 
-func(s *servicemovie) CreateMovie(input input.CreateMovieInput) (model.Movie, error) {
-	movie := model.Movie{}
+func(s *servicemovie) CreateMovie(input input.CreateMovieInput) (entities.Movie, error) {
+	movie := entities.Movie{}
 	movie.Title = input.Title
 	movie.Ratings = input.Ratings
 	movie.Year = input.Year
@@ -34,7 +34,7 @@ func(s *servicemovie) CreateMovie(input input.CreateMovieInput) (model.Movie, er
 	return newGenre, nil
 }
 
-func(s *servicemovie) GetAllMovies() ([]model.Movie, error) {
-	var movies []model.Movie
+func(s *servicemovie) GetAllMovies() ([]entities.Movie, error) {
+	var movies []entities.Movie
 	return movies, nil
 }

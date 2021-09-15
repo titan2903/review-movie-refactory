@@ -1,17 +1,17 @@
 package repository
 
 import (
-	"review_movie/model"
+	"review_movie/entities"
 
 	"gorm.io/gorm"
 )
 
 type RepositoryUser interface {
-	CreateUser(user model.User) (model.User, error)
-	GetDataUser() ([]model.User, error)
-	UpdateUser(user model.User) (model.User, error)
-	FindByID(ID int) (model.User, error)
-	FindByEmail(email string) (model.User, error)
+	CreateUser(user entities.User) (entities.User, error)
+	GetDataUser() ([]entities.User, error)
+	UpdateUser(user entities.User) (entities.User, error)
+	FindByID(ID int) (entities.User, error)
+	FindByEmail(email string) (entities.User, error)
 }
 
 type repositoryuser struct {
@@ -22,8 +22,8 @@ func NewRepositoryUser(db *gorm.DB) *repositoryuser {
 	return &repositoryuser{db}
 }
 
-func(r *repositoryuser) FindByEmail(email string) (model.User, error){
-	var user model.User
+func(r *repositoryuser) FindByEmail(email string) (entities.User, error){
+	var user entities.User
 	err := r.db.Where("email = ?", email).Find(&user).Error
 
 	if err != nil {
@@ -33,8 +33,8 @@ func(r *repositoryuser) FindByEmail(email string) (model.User, error){
 	return user, nil
 }
 
-func(r *repositoryuser) FindByID(ID int) (model.User, error) {
-	var user model.User
+func(r *repositoryuser) FindByID(ID int) (entities.User, error) {
+	var user entities.User
 	err := r.db.Where("id = ?", ID).Find(&user).Error
 
 	if err != nil {
@@ -44,7 +44,7 @@ func(r *repositoryuser) FindByID(ID int) (model.User, error) {
 	return user, nil
 }
 
-func(r *repositoryuser) CreateUser(user model.User) (model.User, error) {
+func(r *repositoryuser) CreateUser(user entities.User) (entities.User, error) {
 	err := r.db.Create(&user).Error
 	if err != nil {
 		return user, err
@@ -53,8 +53,8 @@ func(r *repositoryuser) CreateUser(user model.User) (model.User, error) {
 	return user, nil
 }
 
-func(r *repositoryuser) GetDataUser() ([]model.User, error) {
-	var users []model.User
+func(r *repositoryuser) GetDataUser() ([]entities.User, error) {
+	var users []entities.User
 
 	err := r.db.Find(&users).Error
 	if err != nil {
@@ -64,7 +64,7 @@ func(r *repositoryuser) GetDataUser() ([]model.User, error) {
 	return users, nil
 }
 
-func(r *repositoryuser) UpdateUser(user model.User) (model.User, error) {
+func(r *repositoryuser) UpdateUser(user entities.User) (entities.User, error) {
 	err := r.db.Save(&user).Error
 
 	if err != nil {

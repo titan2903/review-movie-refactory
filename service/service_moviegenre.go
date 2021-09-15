@@ -1,13 +1,13 @@
 package service
 
 import (
+	"review_movie/entities"
 	"review_movie/input"
-	"review_movie/model"
 	"review_movie/repository"
 )
 
 type ServiceMovieGenre interface {
-	CreateMovieGenre(input input.MovieGenreInput) (model.MovieGenre, error)
+	CreateMovieGenre(input input.MovieGenreInput) (entities.MovieGenre, error)
 }
 
 type servicemoviegenre struct {
@@ -18,8 +18,8 @@ func NewServiceMovieGenre(repository repository.RepositoryMovieGenre) *servicemo
 	return &servicemoviegenre{repository}
 }
 
-func(s *servicemoviegenre) CreateMovieGenre(input input.MovieGenreInput) (model.MovieGenre, error) {
-	movie_genre := model.MovieGenre{}
+func(s *servicemoviegenre) CreateMovieGenre(input input.MovieGenreInput) (entities.MovieGenre, error) {
+	movie_genre := entities.MovieGenre{}
 	movie_genre.MovieID = input.MovieID
 	movie_genre.GenreID = input.GenreID
 

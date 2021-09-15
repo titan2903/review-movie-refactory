@@ -1,15 +1,15 @@
 package service
 
 import (
+	"review_movie/entities"
 	"review_movie/input"
-	"review_movie/model"
 	"review_movie/repository"
 )
 
 
 type ServiceReview interface {
-	CreateReview(input input.CreateReviewInput) (model.Review, error)
-	GetReviewMovie() ([]model.Review, error)
+	CreateReview(input input.CreateReviewInput) (entities.Review, error)
+	GetReviewMovie() ([]entities.Review, error)
 }
 
 
@@ -21,8 +21,8 @@ func NewServiceReview(repository repository.RepositoryReview) *servicereview {
 	return &servicereview{repository}
 }
 
-func(s *servicereview) CreateReview(input input.CreateReviewInput) (model.Review, error) {
-	review := model.Review{}
+func(s *servicereview) CreateReview(input input.CreateReviewInput) (entities.Review, error) {
+	review := entities.Review{}
 	review.UserID = input.UserID
 	review.MovieID = input.MovieID
 	review.Rate = input.Rate
@@ -36,7 +36,7 @@ func(s *servicereview) CreateReview(input input.CreateReviewInput) (model.Review
 	return newGenre, nil
 }
 
-func(s *servicereview) GetReviewMovie() ([]model.Review, error) {
-	var review []model.Review
+func(s *servicereview) GetReviewMovie() ([]entities.Review, error) {
+	var review []entities.Review
 	return review, nil
 }

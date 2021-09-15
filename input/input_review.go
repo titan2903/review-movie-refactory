@@ -1,7 +1,7 @@
 package input
 
 import (
-	"review_movie/model"
+	"review_movie/entities"
 )
 
 type CreateReviewInput struct {
@@ -13,6 +13,6 @@ type CreateReviewInput struct {
 
 type GetReviewInputByID struct {
 	ID   int `uri:"id" binding:"required"`
-	User model.User
-	Movie model.Movie
+	User entities.User
+	Movie entities.Movie
 }

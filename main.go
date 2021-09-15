@@ -4,9 +4,9 @@ import (
 	"fmt"
 	"log"
 	"review_movie/auth"
+	"review_movie/entities"
 	"review_movie/handler"
 	"review_movie/middleware"
-	"review_movie/model"
 	"review_movie/repository"
 	"review_movie/service"
 
@@ -33,7 +33,7 @@ func main() {
 		log.Fatal(err.Error())
 	}
 
-	db.AutoMigrate(&model.User{}, &model.Review{}, &model.MovieGenre{}, &model.Movie{}, &model.Genre{})
+	db.AutoMigrate(&entities.User{}, &entities.Review{}, &entities.MovieGenre{}, &entities.Movie{}, &entities.Genre{})
 
 	//! Auth
 	authService := auth.NewService()

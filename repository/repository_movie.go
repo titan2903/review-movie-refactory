@@ -1,14 +1,14 @@
 package repository
 
 import (
-	"review_movie/model"
+	"review_movie/entities"
 
 	"gorm.io/gorm"
 )
 
 type RepositoryMovie interface {
-	CreateMovie(movie model.Movie) (model.Movie, error)
-	GetAllMovies() ([]model.Movie, error)
+	CreateMovie(movie entities.Movie) (entities.Movie, error)
+	GetAllMovies() ([]entities.Movie, error)
 }
 
 type repositorymovie struct {
@@ -20,7 +20,7 @@ func NewRepositoryMovie(db *gorm.DB) *repositorymovie {
 }
 
 
-func(r *repositorymovie) CreateMovie(movie model.Movie) (model.Movie, error) {
+func(r *repositorymovie) CreateMovie(movie entities.Movie) (entities.Movie, error) {
 	err := r.db.Create(&movie).Error
 	if err != nil {
 		return movie, err
@@ -29,7 +29,7 @@ func(r *repositorymovie) CreateMovie(movie model.Movie) (model.Movie, error) {
 	return movie, nil
 }
 
-func(r *repositorymovie) GetAllMovies() ([]model.Movie, error) {
-	var movies []model.Movie
+func(r *repositorymovie) GetAllMovies() ([]entities.Movie, error) {
+	var movies []entities.Movie
 	return movies, nil
 }

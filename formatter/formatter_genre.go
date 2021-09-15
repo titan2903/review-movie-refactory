@@ -1,7 +1,7 @@
 package formatter
 
 import (
-	"review_movie/model"
+	"review_movie/entities"
 	"time"
 )
 
@@ -18,7 +18,7 @@ type GenreFormatterListGenre struct {
 	Name string `json:"name"`
 }
 
-func FormatGenre(genre model.Genre) GenreFormatter {
+func FormatGenre(genre entities.Genre) GenreFormatter {
 	formatter := GenreFormatter{}
 	formatter.ID = genre.ID
 	formatter.Name = genre.Name
@@ -29,7 +29,7 @@ func FormatGenre(genre model.Genre) GenreFormatter {
 	return formatter
 }
 
-func FormatGenreGetResponse(genre model.Genre) GenreFormatterListGenre {
+func FormatGenreGetResponse(genre entities.Genre) GenreFormatterListGenre {
 	formatter := GenreFormatterListGenre{}
 	formatter.ID = genre.ID
 	formatter.Name = genre.Name
@@ -37,7 +37,7 @@ func FormatGenreGetResponse(genre model.Genre) GenreFormatterListGenre {
 	return formatter
 }
 
-func FormatGenres(genres []model.Genre) []GenreFormatterListGenre {
+func FormatGenres(genres []entities.Genre) []GenreFormatterListGenre {
 	if len(genres) == 0 {
 		return []GenreFormatterListGenre{}
 	}
