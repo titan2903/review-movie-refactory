@@ -70,8 +70,8 @@ func ApiResponseLogin(data interface{}) ResponseLogin {
 func FormatValidationError(err error) []string {
 	var errors []string
 
-	for _, e := range err.(validator.ValidationErrors) { //!mnegubah terlebih dahulu menjadi validation error
-		errors = append(errors, e.Error()) //! menambahkan nilai errornya
+	for _, e := range err.(validator.ValidationErrors) {
+		errors = append(errors, e.Error())
 	}
 
 	return errors

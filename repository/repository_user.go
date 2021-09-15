@@ -18,7 +18,7 @@ type repositoryuser struct {
 	db *gorm.DB
 }
 
-func NewRepository(db *gorm.DB) *repositoryuser {
+func NewRepositoryUser(db *gorm.DB) *repositoryuser {
 	return &repositoryuser{db}
 }
 

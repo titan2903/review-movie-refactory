@@ -18,11 +18,11 @@ type ServiceUser interface {
 	FindUserByEmail(email input.FindByEmailInput) (model.User, error)
 }
 
-type serviceuser struct { //! memanggil repository
+type serviceuser struct {
 	repository repository.RepositoryUser
 }
 
-func NewService(repository repository.RepositoryUser) *serviceuser {
+func NewServiceUser(repository repository.RepositoryUser) *serviceuser {
 	return &serviceuser{repository}
 }
 

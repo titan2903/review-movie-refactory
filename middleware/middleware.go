@@ -4,14 +4,14 @@ import (
 	"net/http"
 	"review_movie/auth"
 	"review_movie/helper"
-	"review_movie/user"
+	"review_movie/service"
 	"strings"
 
 	"github.com/dgrijalva/jwt-go"
 	"github.com/gin-gonic/gin"
 )
 
-func AuthMiddleware(authService auth.Service, userService user.Service) gin.HandlerFunc {
+func AuthMiddleware(authService auth.Service, userService service.ServiceUser) gin.HandlerFunc {
 	return func(c *gin.Context) {
 		authHeader := c.GetHeader("Authorization")
 

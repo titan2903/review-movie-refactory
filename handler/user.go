@@ -31,7 +31,7 @@ func(h *userHandler) RegisterUser(c *gin.Context) {
 		errors := helper.FormatValidationError(err)
 
 		errorMessage := gin.H{"errors": errors}
-		response := helper.ApiResponseError("Register account failed", http.StatusUnprocessableEntity, "error", errorMessage) //! entity tidak bisa di proses 
+		response := helper.ApiResponseError("Register account failed", http.StatusUnprocessableEntity, "error", errorMessage)
 
 		c.JSON(http.StatusBadRequest, response)
 		return
@@ -144,9 +144,9 @@ func(h *userHandler) GetUserByEmail(c *gin.Context) {
 }
 
 func(h *userHandler) UpdateUser(c *gin.Context) {
-	var input input.UpdateUserInput
+	var inputUpdate input.UpdateUserInput
 
-	err := c.ShouldBind(&input)
+	err := c.ShouldBind(&inputUpdate)
 
 	if err != nil {
 		errors := helper.FormatValidationError(err)
@@ -172,8 +172,8 @@ func(h *userHandler) UpdateUser(c *gin.Context) {
 	}
 
 	updateInput := input.UpdateUserInput{}
-	updateInput.FullName = input.FullName
-	updateInput.Email = input.Email
+	updateInput.FullName = inputUpdate.FullName
+	updateInput.Email = inputUpdate.Email
 
 	newUser, _ := h.userService.UpdateUser(updateInput, inputEmail)
 	if err != nil {

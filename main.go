@@ -4,14 +4,11 @@ import (
 	"fmt"
 	"log"
 	"review_movie/auth"
-	"review_movie/genre"
 	"review_movie/handler"
 	"review_movie/middleware"
 	"review_movie/model"
-	"review_movie/movie"
-	"review_movie/moviegenre"
-	"review_movie/review"
-	"review_movie/user"
+	"review_movie/repository"
+	"review_movie/service"
 
 	"github.com/gin-gonic/gin"
 	"github.com/joho/godotenv"
@@ -42,24 +39,24 @@ func main() {
 	authService := auth.NewService()
 
 	//! Users
-	userRepository := user.NewRepository(db)
-	userService := user.NewService(userRepository)
+	userRepository := repository.NewRepositoryUser(db)
+	userService := service.NewServiceUser(userRepository)
 	userHandler := handler.NewUserHandler(userService, authService)
 
-	genreRepository := genre.NewRepository(db)
-	genreService := genre.NewService(genreRepository)
+	genreRepository := repository.NewRepositoryGenre(db)
+	genreService := service.NewServiceGenre(genreRepository)
 	genreHandler := handler.NewGenreHandler(genreService)
 
-	reviewRepository := review.NewRepository(db)
-	reviewService := review.NewService(reviewRepository)
+	reviewRepository := repository.NewRepositoryReview(db)
+	reviewService := service.NewServiceReview(reviewRepository)
 	reviewHandler := handler.NewReviewHandler(reviewService)
 
-	movieRepository := movie.NewRepository(db)
-	movieService := movie.NewService(movieRepository)
+	movieRepository := repository.NewRepositoryMovie(db)
+	movieService := service.NewServiceMovie(movieRepository)
 	movieHandler := handler.NewMovieHandler(movieService)
 
-	moviegenreRepository := moviegenre.NewRepository(db)
-	moviegenreService := moviegenre.NewService(moviegenreRepository)
+	moviegenreRepository := repository.NewRepositoryMovieGenre(db)
+	moviegenreService := service.NewServiceMovieGenre(moviegenreRepository)
 	moviegenreHandler := handler.NewMovieGenreHandler(moviegenreService)
 
 	router := gin.Default()

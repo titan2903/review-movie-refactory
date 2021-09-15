@@ -16,11 +16,11 @@ type servicemovie struct {
 	repository repository.RepositoryMovie
 }
 
-func NewServiceMovie(repository repository.RepositoryMovie) *servicemoviegenre {
-	return &servicemoviegenre{repository}
+func NewServiceMovie(repository repository.RepositoryMovie) *servicemovie {
+	return &servicemovie{repository}
 }
 
-func(s *servicemoviegenre) CreateMovie(input input.CreateMovieInput) (model.Movie, error) {
+func(s *servicemovie) CreateMovie(input input.CreateMovieInput) (model.Movie, error) {
 	movie := model.Movie{}
 	movie.Title = input.Title
 	movie.Ratings = input.Ratings
@@ -34,7 +34,7 @@ func(s *servicemoviegenre) CreateMovie(input input.CreateMovieInput) (model.Movi
 	return newGenre, nil
 }
 
-func(s *servicemoviegenre) GetAllMovies() ([]model.Movie, error) {
+func(s *servicemovie) GetAllMovies() ([]model.Movie, error) {
 	var movies []model.Movie
 	return movies, nil
 }
