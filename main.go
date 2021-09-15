@@ -3,8 +3,14 @@ package main
 import (
 	"fmt"
 	"log"
-	"review_movie/user"
+	"review_movie/auth"
+	"review_movie/handler"
+	"review_movie/middleware"
+	"review_movie/model"
+	"review_movie/repository"
+	"review_movie/service"
 
+	"github.com/gin-gonic/gin"
 	"github.com/joho/godotenv"
 	"gorm.io/driver/mysql"
 	"gorm.io/gorm"
@@ -27,5 +33,50 @@ func main() {
 		log.Fatal(err.Error())
 	}
 
-	db.AutoMigrate(&user.User{})
+	db.AutoMigrate(&model.User{}, &model.Review{}, &model.MovieGenre{}, &model.Movie{}, &model.Genre{})
+
+	//! Auth
+	authService := auth.NewService()
+
+	//! Users
+	userRepository := repository.NewRepositoryUser(db)
+	userService := service.NewServiceUser(userRepository)
+	userHandler := handler.NewUserHandler(userService, authService)
+
+	genreRepository := repository.NewRepositoryGenre(db)
+	genreService := service.NewServiceGenre(genreRepository)
+	genreHandler := handler.NewGenreHandler(genreService)
+
+	reviewRepository := repository.NewRepositoryReview(db)
+	reviewService := service.NewServiceReview(reviewRepository)
+	reviewHandler := handler.NewReviewHandler(reviewService)
+
+	movieRepository := repository.NewRepositoryMovie(db)
+	movieService := service.NewServiceMovie(movieRepository)
+	movieHandler := handler.NewMovieHandler(movieService)
+
+	moviegenreRepository := repository.NewRepositoryMovieGenre(db)
+	moviegenreService := service.NewServiceMovieGenre(moviegenreRepository)
+	moviegenreHandler := handler.NewMovieGenreHandler(moviegenreService)
+
+	router := gin.Default()
+	router.Use(middleware.CORSMiddleware()) // ! Allow cors
+
+	apiUser := router.Group("/api/v1/users")
+	apiUser.POST("/register", userHandler.RegisterUser)
+	apiUser.POST("/login", userHandler.Login)
+	apiUser.POST("/fetch", middleware.AuthMiddleware(authService, userService), userHandler.FetchUser)
+
+	apiMovieReview := router.Group("/api/v1/movie_reviews")
+	apiMovieReview.PUT("/user", middleware.AuthMiddleware(authService, userService), userHandler.UpdateUser)
+	apiMovieReview.GET("/user", middleware.AuthMiddleware(authService, userService), userHandler.GetUserByEmail)
+	apiMovieReview.POST("/genre", middleware.AuthMiddleware(authService, userService), genreHandler.CreateGenre)
+	apiMovieReview.GET("/genre", middleware.AuthMiddleware(authService, userService), genreHandler.GetGenres)
+	apiMovieReview.GET("/movies", middleware.AuthMiddleware(authService, userService), movieHandler.GetMovies)
+	apiMovieReview.POST("/movies", middleware.AuthMiddleware(authService, userService), movieHandler.CreateMovie)
+	apiMovieReview.POST("/movies/genre", middleware.AuthMiddleware(authService, userService), moviegenreHandler.CreateMovieGenre)
+	apiMovieReview.POST("/review", middleware.AuthMiddleware(authService, userService), reviewHandler.CreateReview)
+	apiMovieReview.GET("/review", middleware.AuthMiddleware(authService, userService), reviewHandler.GetReviewByMovieID)
+
+	router.Run(":5000")
 }
