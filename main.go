@@ -26,7 +26,8 @@ func main() {
 	dbPassword := myEnv["DB_PASSWORD"]
 	dbHost := myEnv["DB_HOST"]
 	dbName := myEnv["DB_NAME"]
-	dsn := fmt.Sprintf("root:%s@tcp(%s)/%s?charset=utf8mb4&parseTime=True&loc=Local", dbPassword, dbHost, dbName)
+	dbUsername := myEnv["DB_USERNAME"]
+	dsn := fmt.Sprintf("%s:%s@tcp(%s)/%s?charset=utf8mb4&parseTime=True&loc=Local", dbUsername, dbPassword, dbHost, dbName)
 	db, err := gorm.Open(mysql.Open(dsn), &gorm.Config{})
 
 	if err != nil {
